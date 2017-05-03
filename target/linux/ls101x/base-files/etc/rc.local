@@ -1,0 +1,6 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+mount /dev/mmcblk0p1 /usr/share/htdocs/
+/usr/share/htdocs/demo_setup.sh
+
+exit 0

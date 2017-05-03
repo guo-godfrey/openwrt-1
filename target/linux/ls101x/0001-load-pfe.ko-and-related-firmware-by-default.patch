@@ -1,0 +1,42 @@
+From b79c1082ab58773d815f77c1d5d6d5c1d5497e1f Mon Sep 17 00:00:00 2001
+From: Lei Xu <lei.xu@nxp.com>
+Date: Fri, 26 Aug 2016 13:15:34 +0800
+Subject: [PATCH] load pfe.ko and related firmware by default.
+
+Signed-off-by: Lei Xu <lei.xu@nxp.com>
+---
+ package/kernel/linux/modules/netdevices.mk |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/package/kernel/linux/modules/netdevices.mk b/package/kernel/linux/modules/netdevices.mk
+index 9efac98..9f54ca7 100644
+--- a/package/kernel/linux/modules/netdevices.mk
++++ b/package/kernel/linux/modules/netdevices.mk
+@@ -843,3 +843,24 @@ define KernelPackage/spi-ks8995/description
+ endef
+ 
+ $(eval $(call KernelPackage,spi-ks8995))
++
++define KernelPackage/pfe
++  SUBMENU:=$(NETWORK_DEVICES_MENU)
++  TITLE:=Freescale PPFE Driver
++  DEPENDS:=+kmod-ppfe
++  KCONFIG:=CONFIG_FSL_PPFE
++  FILES:=$(LINUX_DIR)/drivers/staging/fsl_ppfe/pfe.ko
++  AUTOLOAD:=$(call AutoProbe,pfe)
++endef
++define KernelPackage/pfe/install
++	$(INSTALL_DIR) $(1)/lib/firmware/pfe
++	$(foreach file,ppfe_class_ls1012a.elf ppfe_tmu_ls1012a.elf, \
++		cp $(TOPDIR)/target/linux/$(BOARD)/image/$(file) $(1)/lib/firmware/pfe/$(file); \
++	)
++endef
++
++define KernelPackage/ppfe/description
++ Kernel module for PPFE support
++endef
++
++$(eval $(call KernelPackage,pfe))
+-- 
+1.7.9.5
+

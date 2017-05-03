@@ -1,0 +1,28 @@
+From 936fb63daa60033062c2f9bce283c530faea7e81 Mon Sep 17 00:00:00 2001
+From: Lei Xu <lei.xu@nxp.com>
+Date: Tue, 23 Aug 2016 20:53:53 +0800
+Subject: [PATCH] Recover the KMALLOC_SHIFT_HIGH to 25.
+
+Signed-off-by: Lei Xu <lei.xu@nxp.com>
+---
+ include/linux/slab.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 9f17d3b..c265bec 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -172,8 +172,8 @@ size_t ksize(const void *);
+  * to do various tricks to work around compiler limitations in order to
+  * ensure proper constant folding.
+  */
+-#define KMALLOC_SHIFT_HIGH	((MAX_ORDER + PAGE_SHIFT - 1) <= 17 ? \
+-				(MAX_ORDER + PAGE_SHIFT - 1) : 17)
++#define KMALLOC_SHIFT_HIGH	((MAX_ORDER + PAGE_SHIFT - 1) <= 25 ? \
++				(MAX_ORDER + PAGE_SHIFT - 1) : 25)
+ #define KMALLOC_SHIFT_MAX	KMALLOC_SHIFT_HIGH
+ #ifndef KMALLOC_SHIFT_LOW
+ #define KMALLOC_SHIFT_LOW	5
+-- 
+1.7.9.5
+
